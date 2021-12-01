@@ -1,5 +1,6 @@
 <template>
     <video autoplay="true" id="video"></video>
+    <div id="filter"></div>
 </template>
 
 <script>
@@ -24,6 +25,18 @@ export default {
     #video {
         width: 100vw;
         height: 100vh;
-        transform: scaleX(-1)
+        transform: scaleX(-1);
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+
+    #filter {
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        backdrop-filter: brightness(.1);
     }
 </style>
