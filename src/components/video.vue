@@ -29,6 +29,9 @@ export default {
         position: fixed;
         top: 0;
         left: 0;
+        object-fit: cover;
+        object-position: center;
+        z-index: -5;
     }
 
     #filter {
@@ -37,6 +40,7 @@ export default {
         position: fixed;
         top: 0;
         left: 0;
-        backdrop-filter: brightness(.1);
+        backdrop-filter: brightness(.3);
+        z-index: -5;
     }
 </style>
