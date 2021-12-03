@@ -2,7 +2,7 @@
   <webcamVideo />
   <h1 id="time">{{ this.time }}</h1>
   <button @click="testFunction()">test</button>
-  <route />
+  <route v-bind:destination="'DHBW'" v-bind:start="'Wohnheim'" />
 </template>
 
 <script>
@@ -39,12 +39,16 @@ export default {
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "MetricHPE", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 body {
@@ -56,7 +60,18 @@ body {
   color: white;
   text-align: center;
   font-size: 5em;
-  font-weight: 100;
+  font-weight: 300;
+}
+
+#routeContainer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: #FFFFFF34;
+  padding: 1em 1em 0;
+  margin: 1em;
+  border-radius: 9px;
+  line-height: normal;
 }
 
 </style>
