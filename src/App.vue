@@ -6,20 +6,20 @@
 </template>
 
 <script>
-import webcamVideo from '@/components/video.vue'
-import route from '@/components/route.vue'
+import webcamVideo from "@/components/video.vue";
+import route from "@/components/route.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     webcamVideo,
-    route
+    route,
   },
   data() {
     return {
       time: null,
       interval: null,
-    }
+    };
   },
   mounted() {
     this.interval = setInterval(() => {
@@ -32,9 +32,9 @@ export default {
       /*this.axios.get(this.api).then((res) => {
         console.log(res)
       });*/
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>
@@ -48,7 +48,7 @@ export default {
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
@@ -67,11 +67,10 @@ body {
   position: fixed;
   left: 0;
   bottom: 0;
-  background: #FFFFFF34;
+  background: #ffffff34;
   padding: 1em 1em 0;
   margin: 1em;
   border-radius: 9px;
   line-height: normal;
 }
-
 </style>
