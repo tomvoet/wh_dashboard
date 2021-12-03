@@ -5,18 +5,18 @@
 
 <script>
 import { Loader } from '@googlemaps/js-api-loader';
+import keys from '../../keys.json'
 
 export default {
   name: 'route',
   data() {
       return {
           loader: null,
-          apiKey: "AIzaSyAQUU4it_YoZqtcEFOb-uREcjjWfTnC3P8",
       }
   },
   async mounted() {
     this.loader = new Loader({
-        apiKey: "AIzaSyAQUU4it_YoZqtcEFOb-uREcjjWfTnC3P8",
+        apiKey: keys["api"],
         version: "weekly",
         libraries: ["directions"]
     });
@@ -39,6 +39,11 @@ export default {
                 console.log(response);
                 console.log(response["routes"][0]["legs"][0]["departure_time"]);
                 console.log(response["routes"][0]["legs"][0]["steps"])
+                var steps = response["routes"][0]["legs"][0]["steps"];
+                for(var step of steps) {
+                    console.log(step);
+                    // irgendwie losfahrzeit sbahn kriegen
+                }
                 })
                 .catch((e) => window.alert("Directions request failed due to " + e));
         
