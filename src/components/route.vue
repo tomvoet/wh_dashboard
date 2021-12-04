@@ -1,5 +1,4 @@
 <template>
-  <button @click="updateFunc()">testttttt</button>
   <div id="routeContainer" v-if="this.route['steps'] != undefined">
     <div id="routeHeader">
       <div id="start">
@@ -85,6 +84,14 @@ export default {
       apiKey: keys["api"], //insert google-cloud api key
       version: "weekly",
       libraries: ["directions"],
+    });
+
+    this.$nextTick(() => {
+      console.log("??");
+      this.updateFunc();
+      setInterval(() => {
+        this.updateFunc();
+      }, 5000 * 60);
     });
   },
   methods: {

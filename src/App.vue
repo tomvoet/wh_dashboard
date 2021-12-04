@@ -2,14 +2,18 @@
   <webcamVideo />
   <h1 id="time">{{ this.time }}</h1>
   <button @click="testFunction()">test</button>
-  <route v-bind:destination="'DHBW'" v-bind:start="'Wohnheim'" />
   <temp />
+  <div class="dataContainer">
+    <route v-bind:destination="'DHBW'" v-bind:start="'Wohnheim'" />
+    <calendar />
+  </div>
 </template>
 
 <script>
 import webcamVideo from "@/components/video.vue";
 import route from "@/components/route.vue";
 import temp from "@/components/temp.vue";
+import calendar from "@/components/calendar.vue";
 
 export default {
   name: "App",
@@ -17,6 +21,7 @@ export default {
     webcamVideo,
     route,
     temp,
+    calendar,
   },
   data() {
     return {
@@ -59,13 +64,25 @@ body {
 }
 
 #routeContainer {
-  position: fixed;
-  left: 0;
-  bottom: 0;
   background: #ffffff34;
   padding: 1em 1em 0;
   margin: 1em;
   border-radius: 9px;
-  line-height: normal;
+}
+
+#calendarContainer {
+  background: #ffffff34;
+  width: 40%;
+  margin: 1em;
+  border-radius: 9px;
+}
+
+.dataContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 </style>

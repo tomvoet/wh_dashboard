@@ -17,7 +17,7 @@ export default {
     test() {
       axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
 
-      axios.get("http://192.168.0.104/").then((res) => {
+      axios.get("http://192.168.0.103/").then((res) => {
         this.data = res.data;
       });
     },
