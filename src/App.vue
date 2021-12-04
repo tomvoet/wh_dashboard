@@ -3,17 +3,20 @@
   <h1 id="time">{{ this.time }}</h1>
   <button @click="testFunction()">test</button>
   <route v-bind:destination="'DHBW'" v-bind:start="'Wohnheim'" />
+  <temp />
 </template>
 
 <script>
 import webcamVideo from "@/components/video.vue";
 import route from "@/components/route.vue";
+import temp from "@/components/temp.vue";
 
 export default {
   name: "App",
   components: {
     webcamVideo,
     route,
+    temp,
   },
   data() {
     return {
@@ -25,14 +28,6 @@ export default {
     this.interval = setInterval(() => {
       this.time = new Date().toLocaleTimeString();
     }, 1000);
-  },
-  methods: {
-    testFunction() {
-      //console.log(new google.maps.DirectionsService());
-      /*this.axios.get(this.api).then((res) => {
-        console.log(res)
-      });*/
-    },
   },
 };
 </script>
