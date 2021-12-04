@@ -1,6 +1,6 @@
 <template>
   <button @click="updateFunc()">testttttt</button>
-  <div id="routeContainer" v-if="this.route != {}">
+  <div id="routeContainer" v-if="this.route['steps'] != undefined">
     <div id="routeHeader">
       <div id="start">
         {{ this.start }}<br /><b>{{ this.route["departure_time"] }}</b>
@@ -29,14 +29,16 @@
           v-if="
             this.route['steps'].indexOf(step) != this.route['steps'].length - 1
           "
-          >{{ step.instructions }}</span
+          >{{ step.instructions.replace("S-Bahn", step.short_name) }}</span
         >
         <span class="stepMain" v-else>{{ this.destination }}</span>
         <br />
+
+        <div>{{ step.departure_time + " " + step.departure_stop }}</div>
+        <div>{{ step.arrival_time + " " + step.arrival_stop }}</div>
         <span class="stepData">{{
           step.duration + " | " + step.distance
         }}</span>
-        <div>dasd</div>
       </div>
       <div class="step" v-else>
         <span
@@ -46,7 +48,9 @@
           "
           >{{ step.instructions }}</span
         >
-        <span class="stepMain" v-else>{{ this.destination }}</span>
+        <span class="stepMain" v-else>{{
+          "Gehen bis " + this.destination
+        }}</span>
         <br />
         <span class="stepData">{{
           step.duration + " | " + step.distance
@@ -161,6 +165,7 @@ export default {
   flex-direction: row;
   display: flex;
   align-items: stretch;
+  padding-right: 10%;
 }
 
 .step {
