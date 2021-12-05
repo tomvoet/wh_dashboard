@@ -1,7 +1,6 @@
 <template>
   <webcamVideo />
   <h1 id="time">{{ this.time }}</h1>
-  <button @click="testFunction()">test</button>
   <temp />
   <div class="dataContainer">
     <route v-bind:destination="'DHBW'" v-bind:start="'Wohnheim'" />
@@ -68,6 +67,7 @@ body {
   padding: 1em 1em 0;
   margin: 1em;
   border-radius: 9px;
+  flex-shrink: 1;
 }
 
 #calendarContainer {
@@ -75,6 +75,7 @@ body {
   width: 40%;
   margin: 1em;
   border-radius: 9px;
+  flex-shrink: 1;
 }
 
 .dataContainer {
