@@ -1,5 +1,5 @@
 <template>
-    <video autoplay="true" id="video"></video>
+    <iframe id="video" src="http://localhost:8081"></iframe>
     <div id="filter"></div>
 </template>
 
@@ -7,6 +7,9 @@
 export default {
   name: 'webcamVideo',
   mounted() {
+    //console.log(require ("python-shell"))
+    //test
+    /*
     var video = document.querySelector("#video");
 
     if (navigator.mediaDevices.getUserMedia) {
@@ -17,6 +20,7 @@ export default {
         err => console.log(err)
       );
     }
+    */
   }
 }
 </script>
