@@ -1,5 +1,5 @@
 <template>
-  <div id="routeContainer" v-if="this.route['steps'] != undefined">
+  <div id="routeContainer" v-show="this.route['steps'] != undefined">
     <div id="routeHeader">
       <div id="start">
         {{ this.start }}<br /><b>{{ this.route["departure_time"] }}</b>
@@ -87,7 +87,6 @@ export default {
     });
 
     this.$nextTick(() => {
-      console.log("??");
       this.updateFunc();
       setInterval(() => {
         this.updateFunc();
