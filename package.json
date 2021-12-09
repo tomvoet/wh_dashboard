@@ -13,10 +13,12 @@
   },
   "main": "background.js",
   "dependencies": {
+    "@googleapis/calendar": "^1.0.1",
     "@googlemaps/js-api-loader": "^1.12.11",
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
     "google-maps-api-loader": "^1.1.1",
+    "googleapis": "^92.0.0",
     "node-ical": "^0.14.1",
     "raw-loader": "^4.0.2",
     "vue": "^3.0.0",
