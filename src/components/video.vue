@@ -44,7 +44,7 @@ export default {
         position: fixed;
         top: 0;
         left: 0;
-        backdrop-filter: brightness(.3);
+        backdrop-filter: brightness(1);
         z-index: -5;
     }
 </style>
