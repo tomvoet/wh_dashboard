@@ -2,6 +2,8 @@ import cv2 as cv
 from flask import Flask, render_template, Response
 from flask_cors import CORS
 
+face_cascade = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
+#https://www.pyimagesearch.com/2018/09/24/opencv-face-recognition/
 app = Flask(__name__)
 CORS(app)
 
@@ -24,6 +26,15 @@ def gen_frames():
             frame_hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
             _, _, v_mean, _ = cv.mean(frame_hsv)
             print(v_mean)
+            
+            gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+
+            faces = face_cascade.detectMultiScale(gray, 1.1, 5)
+
+            for (x, y, w, h) in faces:
+                cv.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
+
+
             ret, buffer = cv.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'

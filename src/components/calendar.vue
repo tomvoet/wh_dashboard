@@ -56,6 +56,7 @@ export default {
     },
   },
   mounted() {
+    console.log(gcalendar)
     this.$nextTick(() => {
       this.parseCalendar();
       setInterval(() => {
