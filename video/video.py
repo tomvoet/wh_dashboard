@@ -1,6 +1,7 @@
 import cv2 as cv
 from flask import Flask, render_template, Response
 from flask_cors import CORS
+import json
 
 face_cascade = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
 #https://www.pyimagesearch.com/2018/09/24/opencv-face-recognition/
@@ -12,6 +13,11 @@ cors = CORS(app, resource={
         "origins":"*"
     }
 })
+
+data = {
+    "faceInShot": "false",
+    "brightness": 128
+}
 
 app = Flask(__name__)
 
@@ -30,6 +36,12 @@ def gen_frames():
             gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
             faces = face_cascade.detectMultiScale(gray, 1.1, 5)
+
+            data["faceInShot"] = True if len(faces) > 0  else False
+            data["brightness"] = v_mean
+            
+            with open('data.json', 'w') as json_file:
+                json.dump(data, json_file)
 
             for (x, y, w, h) in faces:
                 cv.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
