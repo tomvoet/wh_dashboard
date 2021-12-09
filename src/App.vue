@@ -31,6 +31,7 @@ export default {
   mounted() {
     this.interval = setInterval(() => {
       this.time = new Date().toLocaleTimeString();
+      document.getElementById('calendarContainer').style.height = document.getElementById('routeContainer').offsetHeight + 'px'
     }, 1000);
   },
 };
@@ -67,7 +68,7 @@ body {
   padding: 1em 1em 0;
   margin: 1em;
   border-radius: 9px;
-  flex-shrink: 1;
+  height: max-content;
 }
 
 #calendarContainer {
@@ -75,7 +76,7 @@ body {
   width: 40%;
   margin: 1em;
   border-radius: 9px;
-  flex-shrink: 1;
+  overflow: hidden;
 }
 
 .dataContainer {
