@@ -21,6 +21,9 @@ def gen_frames():
         if not success:
             break
         else:
+            frame_hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
+            _, _, v_mean, _ = cv.mean(frame_hsv)
+            print(v_mean)
             ret, buffer = cv.imencode('.jpg', frame)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
