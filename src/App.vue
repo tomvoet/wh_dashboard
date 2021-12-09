@@ -26,6 +26,7 @@ export default {
     return {
       time: null,
       interval: null,
+      index: 0,
     };
   },
   mounted() {
@@ -33,6 +34,10 @@ export default {
       this.time = new Date().toLocaleTimeString();
       document.getElementById('calendarContainer').style.height = document.getElementById('routeContainer').offsetHeight + 'px'
     }, 1000);
+  setInterval(() => {
+    document.querySelectorAll('.event')[this.index % 10].scrollIntoView({ behavior: 'smooth', block: 'end'})
+    this.index++;
+  }, 5000)
   },
 };
 </script>
@@ -64,7 +69,7 @@ body {
 }
 
 #routeContainer {
-  background: #ffffff34;
+  background: #ffffff10;
   padding: 1em 1em 0;
   margin: 1em;
   border-radius: 9px;
@@ -72,11 +77,12 @@ body {
 }
 
 #calendarContainer {
-  background: #ffffff34;
+  background: #ffffff10;
   width: 40%;
   margin: 1em;
   border-radius: 9px;
   overflow: hidden;
+  padding: 1em 1em
 }
 
 .dataContainer {
@@ -86,5 +92,10 @@ body {
   width: 100%;
   display: flex;
   justify-content: space-between;
+}
+
+.event {
+  border-radius: 5px;
+  margin-bottom: 1em;
 }
 </style>
