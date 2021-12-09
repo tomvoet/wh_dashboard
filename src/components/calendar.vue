@@ -1,13 +1,19 @@
 <template>
   <div id="calendarContainer">
     <div class="event" v-for="event of this.events" :key="event">
-      {{
-        event.start.getDate().toString() +
-        ". " +
-        (event.start.getMonth() + 1).toString() +
-        ". " +
-        event.summary
-      }}
+      <div class="date">
+        <div>
+        {{ event.start.getDate().toString() + "." }}
+        </div>
+        <!-- https://mythemeshop.com/wp-content/uploads/2020/01/EventON-.png -->
+        <div> 
+          {{ (event.start.getMonth() + 1).toString() + "." }}
+        </div>
+        <div>
+          {{ this.weekday[event.start.getDay()] }}
+        </div>
+      </div>
+      {{event.summary}}
     </div>
   </div>
 </template>
@@ -21,6 +27,7 @@ export default {
   data() {
     return {
       events: [],
+      weekday: ["So","Mo","Di","Mi","Do","Fr","Sa"]
     };
   },
   methods: {
@@ -69,5 +76,13 @@ export default {
 <style scoped>
 div {
   color: white;
+}
+.date {
+  width: 10%;
+  float: left;
+}
+.event {
+  display: flex;
+  flex-direction: row;
 }
 </style>
