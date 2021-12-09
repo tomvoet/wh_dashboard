@@ -26,3 +26,4 @@ pnpm-debug.log*
 /dist_electron
 keys.json
 google_service_account.json
+video/data.json
