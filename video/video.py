@@ -59,7 +59,7 @@ def create_table(conn, create_table_sql):
 def update_data(conn, brightness, faceInShot):
     try:
         c = conn.cursor()
-        c.execute()
+        c.execute(sql_update_data.format(brightness, faceInShot))
     except Error as e:
         print(e)
 
