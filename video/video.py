@@ -12,9 +12,11 @@ sql_create_table = """ CREATE TABLE IF NOT EXISTS daten(
         faceInShot integer DEFAULT 0
     );"""
 
-sql_update_data = """
-    INSERT OR IGNORE INTO visits VALUES (0, {}, {});
-    UPDATE daten SET brightness = {}, faceInShot = {} WHERE id LIKE 0;
+sql_update_data_a = """
+    INSERT OR IGNORE INTO daten VALUES (0, {0}, {1});
+"""
+sql_update_data_b = """
+    UPDATE daten SET brightness = {0}, faceInShot = {1} WHERE id LIKE 0;
 """
 
 face_cascade = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
@@ -42,24 +44,25 @@ def create_connection():
     connec = None;
     
     try:
-        connec = sqlite3.connect("./data.db")
+        connec = sqlite3.connect("./data.db", check_same_thread=False)
         print(sqlite3.version)
     except Error as e:
         print(e)
     return connec
     
-def create_table(conn, create_table_sql):
+def create_table(create_table_sql):
     try:
-        c = conn.cursor()
-        c.execute(create_table_sql)
+        cursor.execute(create_table_sql)
     except Error as e:
         print(e)
 
 
-def update_data(conn, brightness, faceInShot):
+def update_data(brightness, faceInShot):
     try:
-        c = conn.cursor()
-        c.execute(sql_update_data.format(brightness, faceInShot))
+        cursor.execute(sql_update_data_a.format(brightness, faceInShot))
+        conn.commit()
+        cursor.execute(sql_update_data_b.format(brightness, faceInShot))
+        conn.commit()
     except Error as e:
         print(e)
 
@@ -84,7 +87,7 @@ def gen_frames():
             data["faceInShot"] = True if len(faces) > 0  else False
             data["brightness"] = v_mean
             
-            update_data(conn, v_mean, 1 if len(faces) > 0  else 0)
+            update_data(v_mean, 1 if len(faces) > 0 else 0)
             
             with open('data.json', 'w') as json_file:
                 json.dump(data, json_file)
@@ -98,7 +101,7 @@ def gen_frames():
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-
+cursor = None;
 
 @app.route('/')
 def index():
@@ -108,14 +111,17 @@ def index():
 def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-    
 conn = create_connection()
 
+cursor = conn.cursor()
+
 if conn is not None:
-    create_table(conn, sql_create_table)
+    create_table(sql_create_table)
 else:
     print("Error! cannot create the database connection.")
 
+ 
 
 
 app.run(port=8081)
+
