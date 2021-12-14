@@ -87,6 +87,14 @@ body {
   font-size: 5em;
   font-weight: 300;
   position: fixed;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0.25em;
+  transition: all 1s;
+}
+
+#time.active {
   top: 20%;
   right: 50%;
   transform: translateX(50%);
