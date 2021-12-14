@@ -1,4 +1,7 @@
 <template>
+  <div id="filter" :class="{ active: this.movementTrigger }">
+    <button @click="this.movementTrigger = !this.movementTrigger" style="z-index: 1000">test</button>
+  </div>
   <webcamVideo />
   <h1 id="time" :class="{ active: this.movementTrigger }">{{ this.time }}</h1>
   <temp />
@@ -7,7 +10,7 @@
     <calendar />
   </div>
   {{ this.envVals }}<br />
-  <button @click="this.movementTrigger = !this.movementTrigger"></button>
+  <button @click="this.movementTrigger = !this.movementTrigger" style="z-index: 1000">test</button>
 </template>
 
 <script>
@@ -70,6 +73,7 @@ export default {
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+  background: #474747;
 }
 
 * {
@@ -81,23 +85,42 @@ body {
   padding: 0;
 }
 
+#filter {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  backdrop-filter: brightness(20%);
+  z-index: 50;
+  transition: backdrop-filter ease-in-out 1s;
+}
+
+#filter.active {
+  transition: backdrop-filter 1s, z-index ease-in-out 2s;
+  z-index: -50;
+  backdrop-filter: brightness(100%);
+}
+
 #time {
   color: white;
   width: max-content;
-  font-size: 5em;
+  font-size: 8em;
   font-weight: 300;
   position: fixed;
-  top: 0;
-  right: 0;
+  top: 20%;
+  right: 50%;
+  transform: translateX(50%);
   margin: 0;
   padding: 0.25em;
   transition: all 1s;
 }
 
 #time.active {
-  top: 20%;
-  right: 50%;
-  transform: translateX(50%);
+  font-size: 5em;
+  top: 0;
+  right: 0;
+  transform: translateX(0);
 }
 
 #routeContainer {
