@@ -55,9 +55,7 @@ export default {
         document.getElementById("routeContainer").offsetHeight + "px";
     }, 1000);
     setInterval(() => {
-      document
-        .querySelectorAll(".event")
-        [this.index % 10].scrollIntoView({ behavior: "smooth", block: "end" });
+      document.querySelectorAll(".event")[this.index % 10].scrollIntoView({ behavior: "smooth", block: "end" });
       this.index++;
     }, 5000);
   },

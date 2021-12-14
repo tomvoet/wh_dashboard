@@ -6,8 +6,7 @@
         v-for="event of this.events"
         :key="event"
         :style="{
-          backgroundColor:
-            this.colors[this.events.indexOf(event) % this.colors.length],
+          backgroundColor: this.colors[this.events.indexOf(event) % this.colors.length],
         }"
       >
         <div class="date">
@@ -42,28 +41,8 @@ export default {
     return {
       events: [],
       weekday: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
-      colors: [
-        "#17EBA0",
-        "#F740FF",
-        "#00C8FF",
-        "#FC6161",
-        "#FFBC44",
-        "#FFEB59",
-      ],
-      months: [
-        "Jan.",
-        "Febr.",
-        "März",
-        "Apr.",
-        "Mai",
-        "Juni",
-        "Juli",
-        "Aug.",
-        "Sep.",
-        "Okt.",
-        "Nov.",
-        "Dez.",
-      ],
+      colors: ["#17EBA0", "#F740FF", "#00C8FF", "#FC6161", "#FFBC44", "#FFEB59"],
+      months: ["Jan.", "Febr.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."],
     };
   },
   methods: {
@@ -75,8 +54,7 @@ export default {
       ical.async.parseICS(calendar).then((res) => {
         for (var item in res) {
           if (res[item].type == "VEVENT") {
-            if (res[item].start >= heute || res[item].rrule != undefined)
-              this.events.push(res[item]);
+            if (res[item].start >= heute || res[item].rrule != undefined) this.events.push(res[item]);
           }
         }
         for (var event of this.events) {

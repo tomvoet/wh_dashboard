@@ -28,3 +28,4 @@ pnpm-debug.log*
 keys.json
 google_service_account.json
 video/data.json
+.prettierrc

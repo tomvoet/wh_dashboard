@@ -9,51 +9,29 @@
         {{ this.destination }}<br /><b>{{ this.route["arrival_time"] }}</b>
       </div>
     </div>
-    <div
-      class="stepContainer"
-      v-for="step in this.route['steps']"
-      :key="step['instructions']"
-    >
+    <div class="stepContainer" v-for="step in this.route['steps']" :key="step['instructions']">
       <div class="stepArrowContainer">
         <div></div>
-        <div
-          v-if="
-            this.route['steps'].indexOf(step) != this.route['steps'].length - 1
-          "
-        ></div>
+        <div v-if="this.route['steps'].indexOf(step) != this.route['steps'].length - 1"></div>
       </div>
       <div class="step sbahn" v-if="step['type'] == 'TRANSIT'">
-        <span
-          class="stepMain"
-          v-if="
-            this.route['steps'].indexOf(step) != this.route['steps'].length - 1
-          "
-          >{{ step.instructions.replace("S-Bahn", step.short_name) }}</span
-        >
+        <span class="stepMain" v-if="this.route['steps'].indexOf(step) != this.route['steps'].length - 1">{{
+          step.instructions.replace("S-Bahn", step.short_name)
+        }}</span>
         <span class="stepMain" v-else>{{ this.destination }}</span>
         <br />
 
         <div>{{ step.departure_time + " " + step.departure_stop }}</div>
         <div>{{ step.arrival_time + " " + step.arrival_stop }}</div>
-        <span class="stepData">{{
-          step.duration + " | " + step.distance
-        }}</span>
+        <span class="stepData">{{ step.duration + " | " + step.distance }}</span>
       </div>
       <div class="step" v-else>
-        <span
-          class="stepMain"
-          v-if="
-            this.route['steps'].indexOf(step) != this.route['steps'].length - 1
-          "
-          >{{ step.instructions }}</span
-        >
-        <span class="stepMain" v-else>{{
-          "Gehen bis " + this.destination
+        <span class="stepMain" v-if="this.route['steps'].indexOf(step) != this.route['steps'].length - 1">{{
+          step.instructions
         }}</span>
+        <span class="stepMain" v-else>{{ "Gehen bis " + this.destination }}</span>
         <br />
-        <span class="stepData">{{
-          step.duration + " | " + step.distance
-        }}</span>
+        <span class="stepData">{{ step.duration + " | " + step.distance }}</span>
       </div>
     </div>
   </div>
@@ -104,18 +82,12 @@ export default {
             travelMode: google.maps.TravelMode["TRANSIT"],
           })
           .then((response) => {
-            this.route["arrival_time"] =
-              response["routes"][0]["legs"][0]["arrival_time"]["text"];
-            this.route["departure_time"] =
-              response["routes"][0]["legs"][0]["departure_time"]["text"];
-            this.route["duration"] =
-              response["routes"][0]["legs"][0]["duration"]["text"];
-            this.route["distance"] =
-              response["routes"][0]["legs"][0]["distance"]["text"];
-            this.route["start_address"] =
-              response["routes"][0]["legs"][0]["start_address"];
-            this.route["end_address"] =
-              response["routes"][0]["legs"][0]["end_address"];
+            this.route["arrival_time"] = response["routes"][0]["legs"][0]["arrival_time"]["text"];
+            this.route["departure_time"] = response["routes"][0]["legs"][0]["departure_time"]["text"];
+            this.route["duration"] = response["routes"][0]["legs"][0]["duration"]["text"];
+            this.route["distance"] = response["routes"][0]["legs"][0]["distance"]["text"];
+            this.route["start_address"] = response["routes"][0]["legs"][0]["start_address"];
+            this.route["end_address"] = response["routes"][0]["legs"][0]["end_address"];
             this.route["steps"] = [];
 
             for (var step of response["routes"][0]["legs"][0]["steps"]) {
@@ -127,10 +99,8 @@ export default {
                 obj["type"] = "TRANSIT";
                 obj["arrival_stop"] = step["transit"]["arrival_stop"]["name"];
                 obj["arrival_time"] = step["transit"]["arrival_time"]["text"];
-                obj["departure_stop"] =
-                  step["transit"]["departure_stop"]["name"];
-                obj["departure_time"] =
-                  step["transit"]["departure_time"]["text"];
+                obj["departure_stop"] = step["transit"]["departure_stop"]["name"];
+                obj["departure_time"] = step["transit"]["departure_time"]["text"];
                 obj["headsign"] = step["transit"]["headsign"];
                 obj["short_name"] = step["transit"]["line"]["short_name"];
               }
