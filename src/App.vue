@@ -6,6 +6,7 @@
     <route v-bind:destination="'DHBW'" v-bind:start="'Wohnheim'" />
     <calendar />
   </div>
+  {{this.envVals}}
 </template>
 
 <script>
@@ -27,12 +28,35 @@ export default {
       time: null,
       interval: null,
       index: 0,
+      envVals: null,
+      sql: "SELECT * FROM daten"
     };
   },
   mounted() {
+    
+
+
+    var sqlite3 = require('sqlite3').verbose();
+    var db = new sqlite3.Database('C:/wh_smartmirror/db/data.db', (err) => {
+      if (err) {
+        console.error(err)
+      }
+    });
+    db.all(this.sql, [], (err, rows) => {
+      if(err) {
+        throw err
+      }
+      console.log("??")
+      console.log(rows[0])
+    })
+
     this.interval = setInterval(() => {
       this.time = new Date().toLocaleTimeString();
-      document.getElementById('calendarContainer').style.height = document.getElementById('routeContainer').offsetHeight + 'px'
+      document.getElementById('calendarContainer').style.height = document.getElementById('routeContainer').offsetHeight + 'px';
+      db.all(this.sql, [], (err, data) => {
+        if(err) throw err;
+        this.envVals = data[0]
+      })
     }, 1000);
   setInterval(() => {
     document.querySelectorAll('.event')[this.index % 10].scrollIntoView({ behavior: 'smooth', block: 'end'})
