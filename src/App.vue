@@ -6,7 +6,8 @@
     <route v-bind:destination="'DHBW'" v-bind:start="'Wohnheim'" />
     <calendar />
   </div>
-  {{this.envVals}}
+  {{this.envVals}}  
+  <button onclick="this.movementTrigger = !this.movementTrigger"></button>
 </template>
 
 <script>
@@ -29,7 +30,8 @@ export default {
       interval: null,
       index: 0,
       envVals: null,
-      sql: "SELECT * FROM daten"
+      sql: "SELECT * FROM daten",
+      movementTrigger: false
     };
   },
   mounted() {
@@ -42,26 +44,23 @@ export default {
         console.error(err)
       }
     });
-    db.all(this.sql, [], (err, rows) => {
-      if(err) {
-        throw err
-      }
-      console.log("??")
-      console.log(rows[0])
-    })
-
-    this.interval = setInterval(() => {
-      this.time = new Date().toLocaleTimeString();
-      document.getElementById('calendarContainer').style.height = document.getElementById('routeContainer').offsetHeight + 'px';
+    
+    setInterval(() => {
       db.all(this.sql, [], (err, data) => {
         if(err) throw err;
         this.envVals = data[0]
       })
+    }, 100)
+
+    this.interval = setInterval(() => {
+      this.time = new Date().toLocaleTimeString();
+      document.getElementById('calendarContainer').style.height = document.getElementById('routeContainer').offsetHeight + 'px';
+      
     }, 1000);
-  setInterval(() => {
-    document.querySelectorAll('.event')[this.index % 10].scrollIntoView({ behavior: 'smooth', block: 'end'})
-    this.index++;
-  }, 5000)
+    setInterval(() => {
+      document.querySelectorAll('.event')[this.index % 10].scrollIntoView({ behavior: 'smooth', block: 'end'})
+      this.index++;
+    }, 5000)
   },
 };
 </script>
