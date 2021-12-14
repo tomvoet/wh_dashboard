@@ -1,13 +1,13 @@
 <template>
   <webcamVideo />
-  <h1 id="time">{{ this.time }}</h1>
+  <h1 id="time" :class="{ active: this.movementTrigger }">{{ this.time }}</h1>
   <temp />
   <div class="dataContainer">
     <route v-bind:destination="'DHBW'" v-bind:start="'Wohnheim'" />
     <calendar />
   </div>
-  {{ this.envVals }}
-  <button onclick="this.movementTrigger = !this.movementTrigger"></button>
+  {{ this.envVals }}<br />
+  <button @click="this.movementTrigger = !this.movementTrigger"></button>
 </template>
 
 <script>
@@ -83,9 +83,13 @@ body {
 
 #time {
   color: white;
-  text-align: center;
+  width: max-content;
   font-size: 5em;
   font-weight: 300;
+  position: fixed;
+  top: 20%;
+  right: 50%;
+  transform: translateX(50%);
 }
 
 #routeContainer {
