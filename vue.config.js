@@ -1,8 +1,8 @@
-  module.exports = {
-    pluginOptions: {
-      electronBuilder: {
-        nodeIntegration: true,
-        contextIsolation: false
-      }
+module.exports = {
+  pluginOptions: {
+    electronBuilder: {
+      nodeIntegration: true,
+      contextIsolation: false
     }
   }
+}
