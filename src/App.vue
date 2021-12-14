@@ -66,6 +66,10 @@ export default {
 </script>
 
 <style>
+:root {
+  --active-transition-time: 2s;
+}
+
 #app {
   font-family: "MetricHPE", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -93,11 +97,11 @@ body {
   left: 0;
   backdrop-filter: brightness(20%);
   z-index: 50;
-  transition: backdrop-filter ease-in-out 1s;
+  transition: backdrop-filter ease-in-out var(--active-transition-time);
 }
 
 #filter.active {
-  transition: backdrop-filter 1s, z-index ease-in-out 2s;
+  transition: backdrop-filter var(--active-transition-time), z-index ease-in-out calc(var(--active-transition-time) * 2);
   z-index: -50;
   backdrop-filter: brightness(100%);
 }
@@ -113,7 +117,7 @@ body {
   transform: translateX(50%);
   margin: 0;
   padding: 0.25em;
-  transition: all 1s;
+  transition: all var(--active-transition-time);
 }
 
 #time.active {
