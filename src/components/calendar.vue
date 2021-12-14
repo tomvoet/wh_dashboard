@@ -1,25 +1,33 @@
 <template>
   <div id="calendarContainer">
     <div id="calendarWrapper">
-    <div class="event" v-for="event of this.events" :key="event" :style="{backgroundColor: this.colors[this.events.indexOf(event) % this.colors.length] }">
-      <div class="date">
-        <div>
+      <div
+        class="event"
+        v-for="event of this.events"
+        :key="event"
+        :style="{
+          backgroundColor:
+            this.colors[this.events.indexOf(event) % this.colors.length],
+        }"
+      >
+        <div class="date">
           <div>
-            {{ this.weekday[event.start.getDay()] }} 
-          </div>
-          <!-- https://mythemeshop.com/wp-content/uploads/2020/01/EventON-.png -->
-          <div style="font-size: 1.5em; font-weight: 900;"> 
-            {{ event.start.getDate().toString() + "." }}
-          </div>
-          <div>
-            {{ this.months[event.start.getMonth()] }}
+            <div>
+              {{ this.weekday[event.start.getDay()] }}
+            </div>
+            <!-- https://mythemeshop.com/wp-content/uploads/2020/01/EventON-.png -->
+            <div style="font-size: 1.5em; font-weight: 900">
+              {{ event.start.getDate().toString() + "." }}
+            </div>
+            <div>
+              {{ this.months[event.start.getMonth()] }}
+            </div>
           </div>
         </div>
+        <div class="dateText">
+          <span>{{ event.summary }}</span>
+        </div>
       </div>
-      <div class="dateText">
-      <span>{{event.summary}}</span>
-      </div>
-    </div>
     </div>
   </div>
 </template>
@@ -33,9 +41,29 @@ export default {
   data() {
     return {
       events: [],
-      weekday: ["So","Mo","Di","Mi","Do","Fr","Sa"],
-      colors: ["#17EBA0", "#F740FF", "#00C8FF", "#FC6161", "#FFBC44", "#FFEB59"],
-      months: ["Jan.", "Febr.", "März", "Apr.", "Mai", "Juni", "Juli", "Aug.", "Sep.", "Okt.", "Nov.", "Dez."]
+      weekday: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
+      colors: [
+        "#17EBA0",
+        "#F740FF",
+        "#00C8FF",
+        "#FC6161",
+        "#FFBC44",
+        "#FFEB59",
+      ],
+      months: [
+        "Jan.",
+        "Febr.",
+        "März",
+        "Apr.",
+        "Mai",
+        "Juni",
+        "Juli",
+        "Aug.",
+        "Sep.",
+        "Okt.",
+        "Nov.",
+        "Dez.",
+      ],
     };
   },
   methods: {
@@ -101,7 +129,6 @@ export default {
   margin: 0 auto;
 }
 
-
 .event {
   display: flex;
   flex-direction: row;
@@ -110,7 +137,7 @@ export default {
 
 .dateText {
   flex: 1;
-  padding: 1em 1em 1em .1em;
+  padding: 1em 1em 1em 0.1em;
   font-size: 1.5em;
   font-weight: 600;
   display: flex;
@@ -119,7 +146,7 @@ export default {
 }
 
 .dateText > span {
-  margin-top: .1em;
+  margin-top: 0.1em;
 }
 
 #calendarWrapper {

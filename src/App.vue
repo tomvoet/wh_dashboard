@@ -6,7 +6,7 @@
     <route v-bind:destination="'DHBW'" v-bind:start="'Wohnheim'" />
     <calendar />
   </div>
-  {{this.envVals}}  
+  {{ this.envVals }}
   <button onclick="this.movementTrigger = !this.movementTrigger"></button>
 </template>
 
@@ -31,36 +31,35 @@ export default {
       index: 0,
       envVals: null,
       sql: "SELECT * FROM daten",
-      movementTrigger: false
+      movementTrigger: false,
     };
   },
   mounted() {
-    
-
-
-    var sqlite3 = require('sqlite3').verbose();
-    var db = new sqlite3.Database('C:/wh_smartmirror/db/data.db', (err) => {
+    var sqlite3 = require("sqlite3").verbose();
+    var db = new sqlite3.Database("C:/wh_smartmirror/db/data.db", (err) => {
       if (err) {
-        console.error(err)
+        console.error(err);
       }
     });
-    
+
     setInterval(() => {
       db.all(this.sql, [], (err, data) => {
-        if(err) throw err;
-        this.envVals = data[0]
-      })
-    }, 100)
+        if (err) throw err;
+        this.envVals = data[0];
+      });
+    }, 100);
 
     this.interval = setInterval(() => {
       this.time = new Date().toLocaleTimeString();
-      document.getElementById('calendarContainer').style.height = document.getElementById('routeContainer').offsetHeight + 'px';
-      
+      document.getElementById("calendarContainer").style.height =
+        document.getElementById("routeContainer").offsetHeight + "px";
     }, 1000);
     setInterval(() => {
-      document.querySelectorAll('.event')[this.index % 10].scrollIntoView({ behavior: 'smooth', block: 'end'})
+      document
+        .querySelectorAll(".event")
+        [this.index % 10].scrollIntoView({ behavior: "smooth", block: "end" });
       this.index++;
-    }, 5000)
+    }, 5000);
   },
 };
 </script>
@@ -105,7 +104,7 @@ body {
   margin: 1em;
   border-radius: 9px;
   overflow: hidden;
-  padding: 1em 1em
+  padding: 1em 1em;
 }
 
 .dataContainer {
