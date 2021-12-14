@@ -13,11 +13,11 @@ sql_create_table = """ CREATE TABLE IF NOT EXISTS daten(
     );"""
 
 sql_update_data_a = """
-    INSERT OR IGNORE INTO daten VALUES (0, {0}, {1});
-"""
+        INSERT OR IGNORE INTO daten VALUES (0, {0}, {1});
+    """
 sql_update_data_b = """
-    UPDATE daten SET brightness = {0}, faceInShot = {1} WHERE id LIKE 0;
-"""
+        UPDATE daten SET brightness = {0}, faceInShot = {1} WHERE id LIKE 0;
+    """
 
 face_cascade = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
 #https://www.pyimagesearch.com/2018/09/24/opencv-face-recognition/
@@ -44,7 +44,7 @@ def create_connection():
     connec = None;
     
     try:
-        connec = sqlite3.connect("./data.db", check_same_thread=False)
+        connec = sqlite3.connect("../db/data.db", check_same_thread=False)
         print(sqlite3.version)
     except Error as e:
         print(e)
