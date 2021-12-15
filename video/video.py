@@ -5,6 +5,9 @@ import json
 import sqlite3
 #from sqlite3 import Error
 import os
+import imutils
+from imutils.video import VideoStream
+import numpy as np
 
 sql_create_table = """ CREATE TABLE IF NOT EXISTS daten(
         id integer PRIMARY KEY,
@@ -37,9 +40,10 @@ data = {
 
 app = Flask(__name__)
 
-cam = cv.VideoCapture(0)
-
-
+#cam = cv.VideoCapture(0)
+vs = VideoStream(src=0).start()
+net = cv.dnn.readNetFromCaffe("deploy.prototxt.txt", "res10_300x300_ssd_iter_140000.caffemodel")
+minConfidence = 0.5
 """ def create_connection():
     connec = None;
     
@@ -71,30 +75,67 @@ def update_data(brightness, faceInShot):
 
 def gen_frames():  
     while True:
-
-        success, frame = cam.read()  
+        success = True
+        #success, frame = cam.read() 
+        
+        frame = vs.read()
+        
         if not success:
             break
         else:
+            frame = imutils.resize(frame, width=400)
             frame_hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
             _, _, v_mean, _ = cv.mean(frame_hsv)
             print(v_mean)
+            res = imutils.resize(frame, width=800)
+                    
+            (h, w) = frame.shape[:2]
+            blob = cv.dnn.blobFromImage(cv.resize(frame, (300, 300)), 1.0,
+		    (300, 300), (104.0, 177.0, 123.0))
             
+            
+            
+            net.setInput(blob)
+            detections = net.forward()
+            faceInShot = False
+            
+            
+            for i in range(0, detections.shape[2]):
+                confidence = detections[0, 0, i, 2]
+                
+                if confidence < minConfidence:
+                    continue
+                
+                faceInShot = True
+                box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+                (startX, startY, endX, endY) = box.astype("int")
+        
+                # draw the bounding box of the face along with the associated
+                # probability
+                text = "{:.2f}%".format(confidence * 100)
+                y = startY - 10 if startY - 10 > 10 else startY + 10
+                cv.rectangle(frame, (startX, startY), (endX, endY),
+                    (0, 0, 255), 2)
+                cv.putText(frame, text, (startX, y),
+                cv.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
+                
+            
+            """
             gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
             faces = face_cascade.detectMultiScale(gray, 1.1, 5)
-
-            data["faceInShot"] = True if len(faces) > 0  else False
+            """
+            data["faceInShot"] = faceInShot
             data["brightness"] = v_mean
             
             #update_data(v_mean, 1 if len(faces) > 0 else 0)
-            
+            """
             with open('data.json', 'w') as json_file:
                 json.dump(data, json_file)
 
             for (x, y, w, h) in faces:
                 cv.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
-
+            """
 
             ret, buffer = cv.imencode('.jpg', frame)
             frame = buffer.tobytes()
