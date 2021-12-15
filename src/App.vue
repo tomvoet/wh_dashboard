@@ -1,18 +1,15 @@
 <template>
   <webcamVideo />
 
-  <div id="filter" :class="{ active: this.movementTrigger }">
-    <button @click="this.movementTrigger = !this.movementTrigger" style="z-index: 1000">test</button>
-  </div>
+  <div id="filter" :class="{ active: this.faceInShot.includes(true) }"></div>
 
-  <h1 id="time" :class="{ active: this.movementTrigger }">{{ this.time }}</h1>
+  <h1 id="time" :class="{ active: this.faceInShot.includes(true) }">{{ this.time }}</h1>
   <temp />
   <div class="dataContainer">
     <route v-bind:destination="'DHBW'" v-bind:start="'Wohnheim'" />
     <calendar />
   </div>
-  {{ this.envVals }}<br />
-  <button @click="this.movementTrigger = !this.movementTrigger" style="z-index: 1000">test</button>
+  {{ this.brightness.reduce((a, b) => a + b, 0) / this.brightness.length + " " + this.faceInShot.includes(true) }}<br />
   <spotify />
 </template>
 
@@ -38,9 +35,10 @@ export default {
       time: null,
       interval: null,
       index: 0,
-      envVals: null,
       sql: "SELECT * FROM daten",
       movementTrigger: false,
+      brightness: [128, 128, 128, 128, 128, 128, 128, 128, 128, 128],
+      faceInShot: [true, true, true, true, true, true, true, true, true, true],
     };
   },
   mounted() {
@@ -60,7 +58,11 @@ export default {
     */
     setInterval(() => {
       axios.get("http://localhost:8081/get_data").then((res) => {
-        this.envVals = res.data;
+        this.brightness.push(res.data.brightness);
+        this.brightness.shift();
+        this.faceInShot.push(res.data.faceInShot);
+        this.faceInShot.shift();
+        console.log(this.faceInShot);
       });
     }, 500);
 
