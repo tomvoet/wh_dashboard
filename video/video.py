@@ -1,5 +1,5 @@
 import cv2 as cv
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, jsonify, make_response
 from flask_cors import CORS
 import json
 import sqlite3
@@ -110,6 +110,12 @@ def index():
 @app.route('/video_feed')
 def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/get_data')
+def get_data():
+    response = make_response(jsonify(data))
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 
 conn = create_connection()
 
