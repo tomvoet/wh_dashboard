@@ -3,7 +3,7 @@ from flask import Flask, render_template, Response, jsonify, make_response
 from flask_cors import CORS
 import json
 import sqlite3
-from sqlite3 import Error
+#from sqlite3 import Error
 import os
 
 sql_create_table = """ CREATE TABLE IF NOT EXISTS daten(
@@ -40,7 +40,7 @@ app = Flask(__name__)
 cam = cv.VideoCapture(0)
 
 
-def create_connection():
+""" def create_connection():
     connec = None;
     
     try:
@@ -66,7 +66,7 @@ def update_data(brightness, faceInShot):
     except Error as e:
         print(e)
 
-
+ """
 
 
 def gen_frames():  
@@ -87,7 +87,7 @@ def gen_frames():
             data["faceInShot"] = True if len(faces) > 0  else False
             data["brightness"] = v_mean
             
-            update_data(v_mean, 1 if len(faces) > 0 else 0)
+            #update_data(v_mean, 1 if len(faces) > 0 else 0)
             
             with open('data.json', 'w') as json_file:
                 json.dump(data, json_file)
@@ -101,7 +101,7 @@ def gen_frames():
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-cursor = None;
+#cursor = None;
 
 @app.route('/')
 def index():
@@ -117,14 +117,14 @@ def get_data():
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
 
-conn = create_connection()
+#conn = create_connection()
 
-cursor = conn.cursor()
+#cursor = conn.cursor()
 
-if conn is not None:
-    create_table(sql_create_table)
-else:
-    print("Error! cannot create the database connection.")
+#if conn is not None:
+#    create_table(sql_create_table)
+#else:
+#    print("Error! cannot create the database connection.")
 
  
 
