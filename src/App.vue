@@ -62,7 +62,7 @@ export default {
       axios.get("http://localhost:8081/get_data").then((res) => {
         this.envVals = res.data;
       });
-    }, 200);
+    }, 500);
 
     this.interval = setInterval(() => {
       this.time = new Date().toLocaleTimeString();
