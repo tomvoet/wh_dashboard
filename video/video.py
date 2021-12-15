@@ -77,22 +77,21 @@ def gen_frames():
     while True:
         success = True
         #success, frame = cam.read() 
-        
         frame = vs.read()
-        
+        (h, w) = frame.shape[:2]
+
         if not success:
             break
         else:
+            res = frame
             frame = imutils.resize(frame, width=400)
             frame_hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
             _, _, v_mean, _ = cv.mean(frame_hsv)
             print(v_mean)
-            res = imutils.resize(frame, width=800)
                     
-            (h, w) = frame.shape[:2]
+            (h, w) = res.shape[:2] #(480, 640)
             blob = cv.dnn.blobFromImage(cv.resize(frame, (300, 300)), 1.0,
 		    (300, 300), (104.0, 177.0, 123.0))
-            
             
             
             net.setInput(blob)
@@ -114,9 +113,9 @@ def gen_frames():
                 # probability
                 text = "{:.2f}%".format(confidence * 100)
                 y = startY - 10 if startY - 10 > 10 else startY + 10
-                cv.rectangle(frame, (startX, startY), (endX, endY),
+                cv.rectangle(res, (startX, startY), (endX, endY),
                     (0, 0, 255), 2)
-                cv.putText(frame, text, (startX, y),
+                cv.putText(res, text, (startX, y),
                 cv.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
                 
             
