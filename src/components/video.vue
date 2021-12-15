@@ -29,7 +29,6 @@ export default {
 #video {
   width: 100vw;
   height: 100vh;
-  transform: scaleX(-1);
   position: fixed;
   top: 0;
   left: 0;
