@@ -1,8 +1,10 @@
 <template>
+  <webcamVideo />
+
   <div id="filter" :class="{ active: this.movementTrigger }">
     <button @click="this.movementTrigger = !this.movementTrigger" style="z-index: 1000">test</button>
   </div>
-  <webcamVideo />
+
   <h1 id="time" :class="{ active: this.movementTrigger }">{{ this.time }}</h1>
   <temp />
   <div class="dataContainer">
@@ -11,6 +13,7 @@
   </div>
   {{ this.envVals }}<br />
   <button @click="this.movementTrigger = !this.movementTrigger" style="z-index: 1000">test</button>
+  <spotify />
 </template>
 
 <script>
@@ -18,6 +21,8 @@ import webcamVideo from "@/components/video.vue";
 import route from "@/components/route.vue";
 import temp from "@/components/temp.vue";
 import calendar from "@/components/calendar.vue";
+import spotify from "@/components/spotify.vue";
+import axios from "axios";
 
 export default {
   name: "App",
@@ -26,6 +31,7 @@ export default {
     route,
     temp,
     calendar,
+    spotify,
   },
   data() {
     return {
@@ -38,7 +44,7 @@ export default {
     };
   },
   mounted() {
-    var sqlite3 = require("sqlite3").verbose();
+    /*
     var db = new sqlite3.Database("C:/wh_smartmirror/db/data.db", (err) => {
       if (err) {
         console.error(err);
@@ -51,6 +57,11 @@ export default {
         this.envVals = data[0];
       });
     }, 100);
+    */
+
+    axios.get("http://localhost:8081/get_data").then((res) => {
+      this.envVals = res.data;
+    });
 
     this.interval = setInterval(() => {
       this.time = new Date().toLocaleTimeString();
