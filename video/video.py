@@ -83,12 +83,11 @@ def gen_frames():
         if not success:
             break
         else:
-            res = frame
+            res = cv.flip(frame, 1)
             frame = imutils.resize(frame, width=400)
             frame_hsv = cv.cvtColor(frame, cv.COLOR_BGR2HSV)
             _, _, v_mean, _ = cv.mean(frame_hsv)
-            print(v_mean)
-                    
+
             (h, w) = res.shape[:2] #(480, 640)
             blob = cv.dnn.blobFromImage(cv.resize(frame, (300, 300)), 1.0,
 		    (300, 300), (104.0, 177.0, 123.0))
@@ -104,19 +103,22 @@ def gen_frames():
                 
                 if confidence < minConfidence:
                     continue
-                
+                print("??")
                 faceInShot = True
                 box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
                 (startX, startY, endX, endY) = box.astype("int")
         
                 # draw the bounding box of the face along with the associated
                 # probability
+                startX = w - startX
+                endX = w - endX
+                print(startX)
                 text = "{:.2f}%".format(confidence * 100)
                 y = startY - 10 if startY - 10 > 10 else startY + 10
                 cv.rectangle(res, (startX, startY), (endX, endY),
-                    (0, 0, 255), 2)
-                cv.putText(res, text, (startX, y),
-                cv.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
+                    (0, 255, 0), 2)
+                cv.putText(res, text, (endX, y),
+                cv.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 2)
                 
             
             """
@@ -136,7 +138,7 @@ def gen_frames():
                 cv.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
             """
 
-            ret, buffer = cv.imencode('.jpg', frame)
+            ret, buffer = cv.imencode('.jpg', res)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
