@@ -35,6 +35,7 @@ export default {
   object-fit: cover;
   object-position: center;
   z-index: -5;
+  border: none;
 }
 
 #filter {
