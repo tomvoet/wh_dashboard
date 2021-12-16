@@ -3,7 +3,6 @@ from flask import Flask, render_template, Response, jsonify, make_response
 from flask_cors import CORS
 import json
 import sqlite3
-#from sqlite3 import Error
 import os
 import imutils
 from imutils.video import VideoStream
@@ -23,7 +22,7 @@ sql_update_data_b = """
     """
 
 face_cascade = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
-#https://www.pyimagesearch.com/2018/09/24/opencv-face-recognition/
+
 app = Flask(__name__)
 CORS(app)
 
@@ -44,34 +43,6 @@ app = Flask(__name__)
 vs = VideoStream(src=0).start()
 net = cv.dnn.readNetFromCaffe("deploy.prototxt.txt", "res10_300x300_ssd_iter_140000.caffemodel")
 minConfidence = 0.5
-""" def create_connection():
-    connec = None;
-    
-    try:
-        connec = sqlite3.connect("../db/data.db", check_same_thread=False)
-        print(sqlite3.version)
-    except Error as e:
-        print(e)
-    return connec
-    
-def create_table(create_table_sql):
-    try:
-        cursor.execute(create_table_sql)
-    except Error as e:
-        print(e)
-
-
-def update_data(brightness, faceInShot):
-    try:
-        cursor.execute(sql_update_data_a.format(brightness, faceInShot))
-        conn.commit()
-        cursor.execute(sql_update_data_b.format(brightness, faceInShot))
-        conn.commit()
-    except Error as e:
-        print(e)
-
- """
-
 
 def gen_frames():  
     while True:
@@ -103,7 +74,6 @@ def gen_frames():
                 
                 if confidence < minConfidence:
                     continue
-                print("??")
                 faceInShot = True
                 box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
                 (startX, startY, endX, endY) = box.astype("int")
@@ -112,7 +82,6 @@ def gen_frames():
                 # probability
                 startX = w - startX
                 endX = w - endX
-                print(startX)
                 text = "{:.2f}%".format(confidence * 100)
                 y = startY - 10 if startY - 10 > 10 else startY + 10
                 cv.rectangle(res, (startX, startY), (endX, endY),
@@ -120,23 +89,8 @@ def gen_frames():
                 cv.putText(res, text, (endX, y),
                 cv.FONT_HERSHEY_SIMPLEX, 0.45, (0, 255, 0), 2)
                 
-            
-            """
-            gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
-
-            faces = face_cascade.detectMultiScale(gray, 1.1, 5)
-            """
             data["faceInShot"] = faceInShot
             data["brightness"] = v_mean
-            
-            #update_data(v_mean, 1 if len(faces) > 0 else 0)
-            """
-            with open('data.json', 'w') as json_file:
-                json.dump(data, json_file)
-
-            for (x, y, w, h) in faces:
-                cv.rectangle(frame, (x, y), (x+w, y+h), (255, 0, 0), 2)
-            """
 
             ret, buffer = cv.imencode('.jpg', res)
             frame = buffer.tobytes()
@@ -158,17 +112,5 @@ def get_data():
     response = make_response(jsonify(data))
     response.headers['Access-Control-Allow-Origin'] = '*'
     return response
-
-#conn = create_connection()
-
-#cursor = conn.cursor()
-
-#if conn is not None:
-#    create_table(sql_create_table)
-#else:
-#    print("Error! cannot create the database connection.")
-
- 
-
 
 app.run(port=8081)
