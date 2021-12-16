@@ -7,19 +7,9 @@ import os
 import imutils
 from imutils.video import VideoStream
 import numpy as np
-
-sql_create_table = """ CREATE TABLE IF NOT EXISTS daten(
-        id integer PRIMARY KEY,
-        brightness real DEFAULT 128,
-        faceInShot integer DEFAULT 0
-    );"""
-
-sql_update_data_a = """
-        INSERT OR IGNORE INTO daten VALUES (0, {0}, {1});
-    """
-sql_update_data_b = """
-        UPDATE daten SET brightness = {0}, faceInShot = {1} WHERE id LIKE 0;
-    """
+import time
+timenow = {time: 0}
+timenow["time"] = time.time()
 
 face_cascade = cv.CascadeClassifier('haarcascade_frontalface_default.xml')
 
@@ -39,18 +29,19 @@ data = {
 
 app = Flask(__name__)
 
-#cam = cv.VideoCapture(0)
-vs = VideoStream(src=0).start()
+vs = VideoStream(src=0).start() #use of imutils Threaded Videocapture
 net = cv.dnn.readNetFromCaffe("deploy.prototxt.txt", "res10_300x300_ssd_iter_140000.caffemodel")
 minConfidence = 0.5
 
 def gen_frames():  
     while True:
         success = True
-        #success, frame = cam.read() 
         frame = vs.read()
         (h, w) = frame.shape[:2]
 
+        now_b = time.time()
+        print(now_b - timenow["time"])
+        timenow["time"] = time.time()
         if not success:
             break
         else:
@@ -74,15 +65,17 @@ def gen_frames():
                 
                 if confidence < minConfidence:
                     continue
+                
                 faceInShot = True
+                
                 box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
                 (startX, startY, endX, endY) = box.astype("int")
         
-                # draw the bounding box of the face along with the associated
-                # probability
                 startX = w - startX
                 endX = w - endX
+                
                 text = "{:.2f}%".format(confidence * 100)
+                
                 y = startY - 10 if startY - 10 > 10 else startY + 10
                 cv.rectangle(res, (startX, startY), (endX, endY),
                     (0, 255, 0), 2)
@@ -92,10 +85,10 @@ def gen_frames():
             data["faceInShot"] = faceInShot
             data["brightness"] = v_mean
 
-            ret, buffer = cv.imencode('.jpg', res)
+            ret, buffer = cv.imencode('.bmp', res)
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+                   b'Content-Type: image/bmp\r\n\r\n' + frame + b'\r\n')
 
 #cursor = None;
 
